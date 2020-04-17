@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>TicTacToe</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <style>
+    body {
+      text-align: center;
+    }
+
+    .row {
+      display: flex;
+      justify-content: center;
+    }
+
+    .cell {
+      margin: 30px;
+      border: 1px solid grey;
+      width: 50px;
+      height: 50px;
+    }
+
+    .game {
+      padding: 10px;
+      border: 1px solid grey;
+      margin: 10px;
+    }
+
+    .registration,
+    .authorization {
+      padding: 10px;
+      border: 1px solid grey;
+      margin: 10px auto;
+      width: 300px;
+    }
+
+    .blue {
+      color: #7777ff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="registration">
+      <h3>Регистрация</h3>
+      Логин: <input v-model="regLogin" /><br />
+      Пароль: <input v-model="regPassword" /><br />
+      <div>{{ regStatusMsg }}</div>
+      <button v-on:click="register(regLogin, regPassword)">Зарегистрировать</button>
+    </div>
+    <div class="authorization" v-if="!sourceOfTruth.authHeader">
+      <h3>Авторизация</h3>
+      Логин: <input v-model="authLogin" /><br />
+      Пароль: <input v-model="authPassword" /><br />
+      <button v-on:click="login(authLogin, authPassword)">Вход</button>
+    </div>
+    <div class="authorization" v-else>
+      Вы авторизованы как "{{ sourceOfTruth.userName }}". <a v-on:click="sourceOfTruth.authHeader=''"
+        class="blue">Выйти?</a>
+    </div>
+
+    <div>
+      <button v-on:click="createNewGame">Создать игру</button>
+      <button v-on:click="getExistingGames">Поиск игр</button>
+    </div>
+
+    <div class="row">
+      <div class="game" v-for="(game) in games">
+        Идентификатор игры: {{ game.id }} <br />
+        Статус: {{ game.status }} <br />
+        <button v-on:click="joinGame(game.id)">Присоединиться</button>
+      </div>
+    </div>
+
+    <div class="row" v-for="(row, y) in field">
+      <Cell v-for="(item, x) in row" v-bind:item="item" v-bind:x="x" v-bind:y="y">
+    </div>
+  </div>
+  <script src="./index.js"></script>
+</body>
+
+</html>
